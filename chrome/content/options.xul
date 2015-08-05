@@ -1,59 +1,44 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
-
 <!DOCTYPE prefwindow>
 <prefwindow id="AbductionPreferences"
-        title="Abduction! Preferences"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	
-  <prefpane>
-    <preferences>
-      <!--
-      <preference id="dontsupport.pref" name="extensions.abduction.dontsupport" type="bool" />
-    	-->
-    	<preference id="default_file_type.pref" name="extensions.abduction.default_file_type" type="string" />
-
-    	<preference id="quality.pref" name="extensions.abduction.quality" type="int" />
-
-    </preferences>
-
-  <vbox>
-		<label>Default file type:</label>
-		<radiogroup preference="default_file_type.pref">
-		  <radio id="png" value="png" label="PNG" />
-		  <radio id="jpg" value="jpg" label="JPEG" />
-		</radiogroup>
-	</vbox>
-
-	<description style="margin-top:15px;"></description>
-
-	<vbox>
-		<hbox>
-			<label>JPEG quality:</label>
-			<textbox type="number" min="0" max="100" width="50" maxwidth="50" stretch="false" preference="quality.pref" id="quality-text"  />
-		</hbox>
-
-		<scale min="0" max="100" id="quality-scale" />
-		
-	</vbox>
-
-	  <!--
-	  <checkbox id="chk_dontsupport" preference="dontsupport.pref" label="I don't want to support you" />
-		-->
-
+	title="Abduction! Preferences"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<prefpane>
+		<preferences>
+			<preference id="default_file_type.pref" name="extensions.abduction.default_file_type" type="string" />
+			<preference id="quality.pref" name="extensions.abduction.quality" type="int" />
+		</preferences>
+		<vbox>
+			<label>Default file type:</label>
+			<radiogroup preference="default_file_type.pref">
+				<radio id="png" value="png" label="PNG" />
+				<radio id="jpg" value="jpg" label="JPEG" />
+			</radiogroup>
+		</vbox>
+		<description style="margin-top:15px;"></description>
+		<vbox>
+			<hbox>
+				<label>JPEG quality:</label>
+				<textbox type="number" min="0" max="100" width="50" maxwidth="50" stretch="false" preference="quality.pref" id="quality-text" />
+			</hbox>
+			<scale min="0" max="100" id="quality-scale" />
+		</vbox>
 		<script>
-		(function(){
-			var quality_pref  = document.getElementById("quality.pref");
-			var quality_scale = document.getElementById("quality-scale");
-			quality_pref.onchange = function() {
-				quality_scale.value = quality_pref.value;
-			}
-			quality_scale.onchange = function() {
-				quality_pref.value = quality_scale.value;
-			}
-			quality_scale.value = quality_pref.value;
-		})();
-		</script>
+			(function(){
+				var quality_pref  = document.getElementById("quality.pref");
+				var quality_scale = document.getElementById("quality-scale");
 
-  </prefpane>
+				quality_pref.onchange = function() {
+					quality_scale.value = quality_pref.value;
+				}
+
+				quality_scale.onchange = function() {
+					quality_pref.value = quality_scale.value;
+				}
+
+				quality_scale.value = quality_pref.value;
+			})();
+		</script>
+	</prefpane>
 </prefwindow>

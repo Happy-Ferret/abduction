@@ -2,10 +2,6 @@
 <!DOCTYPE overlay SYSTEM "chrome://abduction/locale/abduction.dtd">
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
 	<script src="chrome://abduction/content/browser.js" />
-	
-	<!-- turned off for now
-	<script src="chrome://abduction/content/support/support.js"></script>
-	-->
 
 	<!-- File Menu -->
 	<menupopup id="menu_FilePopup">
@@ -16,19 +12,19 @@
 			label="&abduction.menu;"
 			oncommand="
 				abduction(document.popupNode, {
-					notice:		'&abduction.notice;',
-					save:		'&abduction.save;',
-					copy: '&abduction.copy;',
-					selectall:	'&abduction.selectall;',
-					autoselect:	'&abduction.autoselect;',
-                    accesskey:	'&abduction.accesskey;',
+					notice:			'&abduction.notice;',
+					save:			'&abduction.save;',
+					copy:			'&abduction.copy;',
+					selectall:		'&abduction.selectall;',
+					autoselect:		'&abduction.autoselect;',
+                    accesskey:		'&abduction.accesskey;',
                     accesskey_copy:	'&abduction.accesskey_copy;',
-                    sizeerror:	'&abduction.sizeerror;'
+                    sizeerror:		'&abduction.sizeerror;'
 				});
 			"
 		/>
 	</menupopup>
-	
+
 	<!-- Context Menu -->
 	<popup id="contentAreaContextMenu">
 		<menuitem
@@ -37,14 +33,14 @@
 			label="&abduction.menu;"
 			oncommand="
 				abduction(document.popupNode, {
-					notice:		'&abduction.notice;',
-					save:		'&abduction.save;',
-					copy: '&abduction.copy;',
-					selectall:	'&abduction.selectall;',
-					autoselect:	'&abduction.autoselect;',
-                    accesskey:	'&abduction.accesskey;',
+					notice:			'&abduction.notice;',
+					save:			'&abduction.save;',
+					copy:			'&abduction.copy;',
+					selectall:		'&abduction.selectall;',
+					autoselect:		'&abduction.autoselect;',
+                    accesskey:		'&abduction.accesskey;',
                     accesskey_copy:	'&abduction.accesskey_copy;',
-                    sizeerror:	'&abduction.sizeerror;'
+                    sizeerror:		'&abduction.sizeerror;'
 				});
 			"
 		/>
