@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='utf-8'?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>{b0e1b4a6-2c6f-4e99-94f2-8e625d7ae255}</em:id>
@@ -25,6 +25,13 @@
 		</em:localized>
 		<em:localized>
 			<Description>
+				<em:locale>es-ES</em:locale>
+				<em:name>Abduction!</em:name>
+				<em:description>Le permite capturar una imagen de una página web, seleccionar la parte que desee y guárdelo.</em:description>
+			</Description>
+		</em:localized>
+		<em:localized>
+			<Description>
 				<em:locale>fr-FR</em:locale>
 				<em:name>Abduction!</em:name>
 				<em:description>Vous permet d'enregistrer l'image d'une page web. Sélectionnez la partie que vous voulez et enregistrez la.</em:description>
@@ -35,13 +42,6 @@
 				<em:locale>it-IT</em:locale>
 				<em:name>Abduction!</em:name>
 				<em:description>Permette di salvare come immagine una pagina web o una sua porzione.</em:description>
-			</Description>
-		</em:localized>
-		<em:localized>
-			<Description>
-				<em:locale>lt</em:locale>
-				<em:name>Abduction!</em:name>
-				<em:description>Suteikia galimybę išsaugoti tinklalapį ar jo dalį kaip paveikslėlį.</em:description>
 			</Description>
 		</em:localized>
 		<em:localized>
@@ -65,9 +65,11 @@
 				<em:description>Дозволяє вам зберігати вибрані частини веб-сторінок як зображення.</em:description>
 			</Description>
 		</em:localized>
-		
+
+		<em:optionsURL>chrome://abduction/content/options.xul</em:optionsURL>
+
 		<em:name>Abduction!</em:name>
-		<em:version>3.0.11</em:version>		
+		<em:version>4.0</em:version>
 		<em:description>Lets you capture an image of a web page, select the part you want and save it.</em:description>
 		<em:homepageURL>http://github.com/rowan-lewis/abduction</em:homepageURL>
 		<em:iconURL>chrome://abduction/content/icon.png</em:iconURL>
@@ -81,15 +83,14 @@
 		<em:translator>Tim Babych</em:translator>
 		<em:translator>Arkadiusz Dwojak</em:translator>
 		<em:translator>Michael Witrant</em:translator>
-		<em:translator>Algimantas Margevičius</em:translator>
-		
+
 		<!-- Firefox -->
 		<em:targetApplication>
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-				<em:minVersion>4.0b1</em:minVersion>
-				<em:maxVersion>15</em:maxVersion>
+				<em:minVersion>3.5</em:minVersion>
+				<em:maxVersion>42.0</em:maxVersion>
 			</Description>
 		</em:targetApplication>
-	</Description>      
+	</Description>
 </RDF>

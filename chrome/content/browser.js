@@ -20,7 +20,22 @@ var abduction = function(target, label) {
 	};
 	
 	var get_position = function(element) {
-		return element.getBoundingClientRect();
+		var result = {
+			top:	element.offsetTop,
+			left:	element.offsetLeft,
+			width:	element.offsetWidth,
+			height:	element.offsetHeight
+		};
+		var parent = element.offsetParent;
+		
+		while (parent != null) {
+			result.left += parent.offsetLeft;
+			result.top += parent.offsetTop;
+			
+			parent = parent.offsetParent;
+		}
+		
+		return result;
 	};
 	
 	var scroll_to_y = function(min_y, max_y) {
@@ -706,8 +721,27 @@ var abduction = function(target, label) {
 	event_connect(widget.selection_right, 'mousedown', action_right);
 	
 	/*-------------------------------------------------------------------------------------------*/
+	
+	// Clipboard
+	var putDataUrlToClipboard = function(dataUrl, callback) {
+		var image = new Image();
+		image.onload = function() {
+		  var node = document.popupNode;
+		  document.popupNode = image;
+		  var command = "cmd_copyImageContents";
+		  var controller = document.commandDispatcher.getControllerForCommand(command);
+		  if (controller && controller.isCommandEnabled(command)) {
+		  	controller.doCommand(command);
+		  }
+		  document.popupNode = node;
+		}
+		image.src = dataUrl;
+	}
 
-	var capture = function() {
+
+	/*-------------------------------------------------------------------------------------------*/
+
+	var capture = function(type, quality) {
 		var canvas = document.createElementNS('http://www.w3.org/1999/xhtml', 'html:canvas');
 		var context = canvas.getContext('2d');
 		var selection = get_position(widget.selection);
@@ -729,8 +763,8 @@ var abduction = function(target, label) {
 		
 		widget.overlay.style.display = 'block';
 		widget.selection.style.display = 'block';
-		
-		return canvas.toDataURL('image/png', '');
+
+		return canvas.toDataURL(type, quality); // [0-1] anything else means default
 	};
 	var action_close = function(event) {
 		event_release(notice, 'command', action_close);
@@ -742,43 +776,82 @@ var abduction = function(target, label) {
 		widget.root.removeChild(widget.selection);
 		notices.removeAllNotifications(true);
 	};
+	var action_copy = function() {
+		var io = Components.classes["@mozilla.org/network/io-service;1"]
+			.getService(Components.interfaces.nsIIOService);
+		putDataUrlToClipboard(capture('image/png', ''), function() {
+			// ...
+		});
+	};
 	var action_save = function() {
 		try {
+			var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+						 .getService(Components.interfaces.nsIPrefService)
+						 .getBranch("extensions.abduction.");
 			var picker = Components.classes["@mozilla.org/filepicker;1"]
 				.createInstance(Components.interfaces.nsIFilePicker);
 			var io = Components.classes["@mozilla.org/network/io-service;1"]
 				.getService(Components.interfaces.nsIIOService);
-			
+	
+			var file_types = [{
+					name: "PNG",
+					type: 'image/png',
+					extension: "png",
+					filter: "*.png"
+				}, {
+					name: "JPEG",
+					type: 'image/jpeg',
+					extension: "jpg",
+					filter: "*.jpg; *.jpeg"
+				}];
+
+			// Swap order depending on the default filetype setting
+			if (prefs.getCharPref("default_file_type") == 'jpg') {
+				file_types = [file_types[1], file_types[0]];
+			}
+
 			// Create a 'Save As' dialog:
 			picker.init(
 				window, label.notice + ' ' + filename,
 				Components.interfaces.nsIFilePicker.modeSave
 			);
-			picker.appendFilters(
-				Components.interfaces.nsIFilePicker.filterImages
-			);
-			picker.defaultExtension = '.png';
-			picker.defaultString = filename + '.png';
+
+			picker.appendFilter(file_types[0].name, file_types[0].filter);
+			picker.appendFilter(file_types[1].name, file_types[1].filter);
+			
+			//picker.appendFilters(
+			//	Components.interfaces.nsIFilePicker.filterImages
+			//);
+
+			picker.defaultExtension = file_types[0].extension;
+			picker.defaultString = filename + '.' + picker.defaultExtension;
 			
 			// Show picker, cancel on user interaction:
 			if (picker.show() == Components.interfaces.nsIFilePicker.returnCancel) return;
 			
 			// Write the file to disk, without a Download dialog:
-			var source = io.newURI(capture(), 'utf8', null);
+			var type = file_types[picker.filterIndex].type;
+			var quality = (type == 'image/jpeg') ? prefs.getIntPref("quality")/100 : null;
+			var source = io.newURI(capture(type, quality), 'utf8', null);
 			var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
 				.createInstance(Components.interfaces.nsIWebBrowserPersist);
 			
 			persist.persistFlags = Components.interfaces.nsIWebBrowserPersist.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
 			persist.persistFlags |= Components.interfaces.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
 			
-			persist.saveURI(source, null, null, null, null, picker.file);
-			
+			var privacyContext = widget.window
+														.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+														.getInterface(Components.interfaces.nsIWebNavigation)
+														.QueryInterface(Components.interfaces.nsILoadContext);
+
+			persist.saveURI(source, null, null, null, null, picker.file, privacyContext);
+
 			// All done.
 			action_close();
 		}
 		
 		catch (error) {
-			alert(label.sizeerror);
+			alert(error);
 		}
 	};
 	var action_keydown = function(event) {
@@ -811,6 +884,21 @@ var abduction = function(target, label) {
 					callback:	function() {
 						try {
 							action_maximize();
+						}
+						
+						catch (error) {
+							alert(error);
+						}
+						
+						return true;
+					}
+				},
+				{
+					label:		label.copy,
+					accessKey:	label.accesskey_copy,
+					callback:	function() {
+						try {
+							action_copy();
 						}
 						
 						catch (error) {

@@ -1,7 +1,9 @@
 <!ENTITY abduction.notice		"Zapisz obraz jako:">
 <!ENTITY abduction.save			"Zapisz zaznaczone…">
+<!ENTITY abduction.copy			"Kopiowanie…">
 <!ENTITY abduction.selectall	"Zaznacz wszystko">
 <!ENTITY abduction.autoselect	"X-Ray">
 <!ENTITY abduction.accesskey	"S">
+<!ENTITY abduction.accesskey_copy	"K">
 <!ENTITY abduction.menu			"Zapisz stronę jako obraz…">
 <!ENTITY abduction.sizeerror	"Sorry, the image is too large, Firefox can not save it.">

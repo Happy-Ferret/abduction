@@ -1,7 +1,9 @@
 <!ENTITY abduction.notice		"Bild speichern von:">
 <!ENTITY abduction.save			"Auswahl speichern...">
+<!ENTITY screengrab.copy      "In die Zwischenablage kopieren...">
 <!ENTITY abduction.selectall	"Alles auswählen">
 <!ENTITY abduction.autoselect	"X-Ray">
 <!ENTITY abduction.accesskey	"S">
+<!ENTITY abduction.accesskey_copy	"K">
 <!ENTITY abduction.menu			"Seite als Bild speichern...">
 <!ENTITY abduction.sizeerror	"Sorry, the image is too large, Firefox can not save it.">
